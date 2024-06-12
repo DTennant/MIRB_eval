@@ -1,0 +1,50 @@
+{
+    "GPT4V": {
+        "codeu_text": 92.59,
+        "plot_text": 97.73
+    },
+    "IDEFICS2": {
+        "codeu_text": 92.59,
+        "plot_text": 38.64
+    },
+    "InternLM-XC2": {
+        "codeu_text": 85.19,
+        "plot_text": 61.36
+    },
+    "Qwen-VL-Chat": {
+        "codeu_text": 57.41,
+        "plot_text": 0.0
+    },
+    "VILA-2.7B": {
+        "codeu_text": 77.78,
+        "plot_text": 27.27
+    },
+    "VILA-7B": {
+        "codeu_text": 79.63,
+        "plot_text": 52.27
+    },
+    "Phi3-Vision": {
+        "codeu_text": 90.74,
+        "plot_text": 72.73
+    },
+    "LLaVA-v1.5-7B": {
+        "codeu_text": 79.63,
+        "plot_text": 20.45
+    },
+    "LLaVA-Next-7B": {
+        "codeu_text": 75.93,
+        "plot_text": 25.0
+    },
+    "LLaVA-Next-13B": {
+        "codeu_text": 88.89,
+        "plot_text": 22.73
+    },
+    "IDEFICS1-9B": {
+        "plot_text": 9.09,
+        "codeu_text": 62.96
+    },
+    "Emu2-Chat": {
+        "plot_text": 18.18,
+        "codeu_text": 46.30
+    }
+}

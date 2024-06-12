@@ -1,0 +1,62 @@
+{
+    "IDEFICS2": {
+        "count": 26.67,
+        "image_needles": 0.0,
+        "3d_scene": 11.0
+    },
+    "InternLM-XC2": {
+        "count": 18.0,
+        "image_needles": 0.0,
+        "3d_scene": 9.0
+    },
+    "Qwen-VL-Chat": {
+        "count": 3.33,
+        "image_needles": 0.0,
+        "3d_scene": 0.0
+    },
+    "Phi3-Vision": {
+        "count": 22.0,
+        "image_needles": 0.0,
+        "3d_scene": 6.0
+    },
+    "LLaVA-v1.5-7B": {
+        "count": 24.67,
+        "image_needles": 0.0,
+        "3d_scene": 6.0
+    },
+    "LLaVA-Next-7B": {
+        "count": 24.67,
+        "image_needles": 0.0,
+        "3d_scene": 6.0
+    },
+    "LLaVA-Next-13B": {
+        "count": 22.0,
+        "image_needles": 0.0,
+        "3d_scene": 1.0
+    },
+    "VILA-7B": {
+        "count": 0.0,
+        "image_needles": 0.0,
+        "3d_scene": 0.0
+    },
+    "VILA-2.7B": {
+        "count": 0.0,
+        "image_needles": 0.0,
+        "3d_scene": 4.0
+    },
+    "GPT4V": {
+        "count": 38.0,
+        "image_needles": 0.0,
+        "3d_scene": 7.0
+    },
+    "Emu2-Chat": {
+        "count": 24.0,
+        "image_needles": 0.0,
+        "3d_scene": 6.0
+    },
+    "IDEFICS1-9B": {
+        "count": 0.67,
+        "image_needles": 0.0,
+        "3d_scene": 2.0
+    }
+}

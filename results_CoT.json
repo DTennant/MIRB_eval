@@ -1,0 +1,110 @@
+{
+    "IDEFICS1-9B": {
+        "domain": 51.0,
+        "places": 80.39,
+        "codeu": 62.96,
+        "count": 30.67,
+        "plot": 4.55,
+        "foods": 23.0,
+        "analogy": 23.0
+    },
+    "Emu2-Chat": {
+        "domain": 71.0,
+        "places": 64.71,
+        "codeu": 46.3,
+        "count": 46.0,
+        "plot": 6.82,
+        "foods": 26.0,
+        "analogy": 19.0
+    },
+    "GPT4V": {
+        "count": 55.33,
+        "plot": 79.55,
+        "domain": 65.0,
+        "analogy": 31.0,
+        "codeu": 81.48,
+        "foods": 69.0,
+        "places": 85.29
+    },
+    "IDEFICS2": {
+        "plot": 18.18,
+        "domain": 61.0,
+        "analogy": 23.0,
+        "codeu": 72.22,
+        "count": 52.67,
+        "foods": 33.0,
+        "places": 85.29
+    },
+    "InternLM-XC2": {
+        "plot": 22.73,
+        "domain": 52.0,
+        "analogy": 27.0,
+        "codeu": 62.96,
+        "count": 36.67,
+        "foods": 31.0,
+        "places": 66.67
+    },
+    "LLaVA-v1.5-7B": {
+        "plot": 22.73,
+        "domain": 48.0,
+        "analogy": 24.0,
+        "codeu": 55.56,
+        "count": 34.67,
+        "foods": 34.0,
+        "places": 62.75
+    },
+    "LLaVA-Next-7B": {
+        "plot": 22.73,
+        "domain": 51.0,
+        "analogy": 27.0,
+        "codeu": 61.11,
+        "count": 35.33,
+        "foods": 33.0,
+        "places": 59.8
+    },
+    "LLaVA-Next-13B": {
+        "plot": 22.73,
+        "domain": 69.0,
+        "analogy": 28.0,
+        "codeu": 59.26,
+        "count": 36.0,
+        "foods": 33.0,
+        "places": 51.96
+    },
+    "Phi3-Vision": {
+        "plot": 38.64,
+        "domain": 51.0,
+        "analogy": 31.0,
+        "codeu": 74.07,
+        "count": 47.33,
+        "foods": 38.0,
+        "places": 72.55
+    },
+    "VILA-2.7B": {
+        "plot": 25.0,
+        "domain": 58.0,
+        "analogy": 25.0,
+        "codeu": 50.0,
+        "count": 46.67,
+        "foods": 38.0,
+        "places": 73.53
+    },
+    "VILA-7B": {
+        "plot": 22.73,
+        "domain": 54.0,
+        "analogy": 24.0,
+        "codeu": 68.52,
+        "count": 52.0,
+        "foods": 43.0,
+        "places": 80.39
+    },
+    "Qwen-VL-Chat": {
+        "plot": 15.91,
+        "domain": 48.0,
+        "analogy": 24.0,
+        "codeu": 35.19,
+        "count": 36.0,
+        "foods": 15.0,
+        "places": 49.02
+    }
+}
