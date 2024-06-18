@@ -33,3 +33,14 @@ Results will be saved in `results` folder.
 python I2T_evaluate.py --engine phi3-vision --dataset codeu
 
 ```
+
+## Citations
+
+```
+@article{zhao2024mirb
+  author    = {Bingchen Zhao, Yongshuo Zong, Letian Zhang, Timothy Hospedales},
+  title     = {Benchmarking Multi-Image Understanding in Vision and Language Models: Perception, Knowledge, Reasoning, and Multi-Hop Reasoning},
+  journal   = {arXiv preprint},
+  year      = {2024},
+}
+```
