@@ -132,61 +132,7 @@ def ICL_I2T_inference(args, engine, dataset, model, tokenizer, query,
                 use_cache=False
                 )
         predicted_answers = tokenizer.batch_decode(generated_ids[:, :], skip_special_tokens=True)[0]
-    elif 'flamingo' in engine:
-        images = []
-        input_text = f"{task_instruction}\n"
-        
-        for query_image in query_images:
-            images.append(query_image)
-            input_text += "<image>"
-            
-        vision_x = [processor(image).unsqueeze(0) for image in images]
-        vision_x = torch.cat(vision_x, dim=0)
-        vision_x = vision_x.unsqueeze(1).unsqueeze(0)
-
-        input_text += f"{query_text}\nAnswer:"
-        
-        lang_x = tokenizer(
-            [input_text],
-            return_tensors="pt",
-        )
-        with torch.no_grad():
-            predicted_answers = model.generate(
-                vision_x=vision_x.to(torch.bfloat16).cuda(),
-                lang_x=lang_x["input_ids"].cuda(),
-                attention_mask=lang_x["attention_mask"].cuda(),
-                max_new_tokens=max_new_tokens,
-                do_sample=False,
-            )
-        input_token_len = lang_x['input_ids'].shape[1]
-        predicted_answers = tokenizer.decode(predicted_answers[:, input_token_len:].cpu()[0], skip_special_tokens=True)
-    elif 'otter' in engine:
-        images = []
-        input_text = f"{task_instruction}\n"
-        for query_image in query_images:
-            images.append(query_image)
-            input_text += "<image>"
-        input_text += f"User: {query_text}\nGPT:<answer>"
-
-        vision_x = processor.preprocess(images, return_tensors="pt")["pixel_values"].unsqueeze(1).unsqueeze(0)
-        lang_x = model.text_tokenizer(
-            [
-                input_text,
-            ],
-            return_tensors="pt",
-        )
-        bad_words_id = tokenizer(["User:", "GPT1:", "GFT:", "GPT:"], add_special_tokens=False).input_ids
-        with torch.no_grad():
-            predicted_answers = model.generate(
-                vision_x=vision_x.to(model.device),
-                lang_x=lang_x["input_ids"].to(model.device),
-                attention_mask=lang_x["attention_mask"].to(model.device),
-                max_new_tokens=max_new_tokens,
-                do_sample=False,
-                bad_words_ids=bad_words_id,
-            )
-        input_token_len = lang_x['input_ids'].shape[1]
-        predicted_answers = tokenizer.decode(predicted_answers[:, input_token_len:].cpu()[0], skip_special_tokens=True)
+    
     elif 'internlm-x2' in engine:
         images = []
         input_text = f"{task_instruction}\n"
@@ -330,9 +276,6 @@ def ICL_I2T_inference(args, engine, dataset, model, tokenizer, query,
                 predicted_answers = "ERROR"
                 print("Error")
                 break
-                # print("pausing")
-                # time.sleep(1)
-                # continue
 
     elif 'gpt4v-azure' in engine:
         def _log_when_fail(retry_state):
@@ -502,53 +445,6 @@ def I2T_first_prob(args, engine, dataset, model, tokenizer, query,
         input_ids = tokenizer_image_token(prompt, tokenizer, IMAGE_TOKEN_INDEX, return_tensors='pt').unsqueeze(0).cuda()
         with torch.no_grad():
             output = model(input_ids, images=image_tensor,)
-    elif 'flamingo' in engine:
-        images = []
-        input_text = f"{task_instruction}\n"
-        
-        for query_image in query_images:
-            images.append(query_image)
-            input_text += "<image>"
-            
-        vision_x = [processor(image).unsqueeze(0) for image in images]
-        vision_x = torch.cat(vision_x, dim=0)
-        vision_x = vision_x.unsqueeze(1).unsqueeze(0)
-
-        input_text += f"{query_text}\nAnswer:"
-        
-        lang_x = tokenizer(
-            [input_text],
-            return_tensors="pt",
-        )
-        with torch.no_grad():
-            output = model.generate(
-                vision_x=vision_x.to(torch.bfloat16).cuda(),
-                lang_x=lang_x["input_ids"].cuda(),
-                attention_mask=lang_x["attention_mask"].cuda(),
-            )
-    elif 'otter' in engine:
-        images = []
-        input_text = f"{task_instruction}\n"
-        for query_image in query_images:
-            images.append(query_image)
-            input_text += "<image>"
-        input_text += f"User: {query_text}\nGPT:<answer>"
-
-        vision_x = processor.preprocess(images, return_tensors="pt")["pixel_values"].unsqueeze(1).unsqueeze(0)
-        lang_x = model.text_tokenizer(
-            [
-                input_text,
-            ],
-            return_tensors="pt",
-        )
-        
-        with torch.no_grad():
-            output = model(
-                vision_x=vision_x.to(model.device),
-                lang_x=lang_x["input_ids"].to(model.device),
-                attention_mask=lang_x["attention_mask"].to(model.device),
-                
-            )
     elif 'internlm-x2' in engine:
         images = []
         meta_instruction ='You are an AI assistant whose name is InternLM-XComposer (浦语·灵笔).\n'
@@ -573,25 +469,6 @@ def I2T_first_prob(args, engine, dataset, model, tokenizer, query,
         }
         with torch.no_grad():
             output = model(**inputs)
-    # elif 'emu2-chat' in engine:
-    #     images = []
-    #     input_text = f"{task_instruction}\n"
-    #     for query_image in query_images:
-    #         images.append(query_image)
-    #         input_text += "[<IMG_PLH>]"
-    #     input_text += f"[{query_text}"
-    #     inputs = model.build_input_ids(
-    #         text=[input_text],
-    #         tokenizer=tokenizer,
-    #         image=images
-    #     )
-        
-    #     with torch.no_grad():
-    #         output = model(
-    #             input_ids=inputs["input_ids"],
-    #             attention_mask=inputs["attention_mask"],
-    #             image=inputs["image"].to(torch.bfloat16))
-        
     elif 'idefics1' in engine:
         prompts = [f"You are a helpful assistant.\n{task_instruction}\n"]
         for query_image in query_images:
