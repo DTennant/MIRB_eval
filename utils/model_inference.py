@@ -229,55 +229,8 @@ def ICL_I2T_inference(args, engine, dataset, model, tokenizer, query,
             messages=messages,
         )
         predicted_answers = response.get('choices', [{}])[0].get('message', {}).get('content')
-        import pdb; pdb.set_trace()
 
-    elif 'gpt4v-openai' in engine:
-        import openai
-        from openai import OpenAI
-        api_key = "your_api_key"
-        client = OpenAI(api_key=api_key)
-        
-        content = [{
-                "type": "text",
-                "text": f"{task_instruction}\nEnsure the generated answers only contain the answer to the question and no other information."
-            }]
-        
-        for query_image_path in query_image_paths:
-            base64_image, mime_type = encode_image(query_image_path)
-            content.append({
-                    "type": "image_url",
-                    "image_url": {"url": f"data:{mime_type};base64,{base64_image}",
-                                  "detail": "low"},
-                    
-            })
-        content.append({
-                "type": "text",
-                "text": query_text
-        })
-        messages = [{
-            "role": "user",
-            "content": content
-        }]
-        while True:
-            try:
-                response = client.chat.completions.create(
-                    model="gpt-4-vision-preview",
-                    messages=messages,
-                    max_tokens=max_new_tokens,
-                )
-                predicted_answers = response.choices[0].message.content
-                print(predicted_answers)
-                break
-            except openai.RateLimitError as e:
-                print("Rate limit reached, waiting for 1 hour")
-                time.sleep(3600)  # Wait for 1 hour (3600 seconds)
-                continue
-            except Exception as e:
-                predicted_answers = "ERROR"
-                print("Error")
-                break
-
-    elif 'gpt4v-azure' in engine:
+    elif 'gpt4v' in engine:
         def _log_when_fail(retry_state):
             print(
                 f"Request failed. Current retry attempts: {retry_state.attempt_number}. "
@@ -348,8 +301,8 @@ def I2T_first_prob(args, engine, dataset, model, tokenizer, query,
     query_text = query['questions']
 
     if 'vila' in engine:
+        # https://github.com/Efficient-Large-Model/VILA
         import sys
-        sys.path.append('/mnt/ceph_rbd/multimodal/long-vllm/VILA')
         from llava.conversation import conv_templates
         from llava.mm_utils import (
             process_images,
