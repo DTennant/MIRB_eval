@@ -24,7 +24,6 @@ def parse_args():
                         default=["phi3-vision"], nargs="+")
     
     parser.add_argument('--max-new-tokens', default=15, type=int, help='Max new tokens for generation.')
-    parser.add_argument('--task_description', default='nothing', type=str, choices=['nothing', 'concise', 'detailed'], help='Detailed level of task description.')
     parser.add_argument('--CoT', default=False, action='store_true', help='Whether to use CoT.')
     parser.add_argument('--seed', default=0, type=int, help='Random seed.')
     return parser.parse_args()
