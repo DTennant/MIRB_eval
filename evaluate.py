@@ -27,17 +27,16 @@ metrics = {
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description='I2T ICL Evaluation')
+    parser = argparse.ArgumentParser(description='I2T Evaluation')
 
     parser.add_argument('--dataset', default='analogy', choices=['analogy', 'codeu', 'count', 'arxiv', 'domain', 'image_needles', 'plot', 'places', 'foods', 'image_jigsaw', '3d_scene',
                                                                  'codeu_text', 'count_concat', 'plot_text', 'arxiv_text', '3d_scene_concat', 'image_needles_concat'], nargs="+")
-    parser.add_argument("--engine", "-e", choices=["openflamingo", "otter-llama", "llava16-7b", "llava16-13b", "llava15-7b", "qwen-vl", "qwen-vl-chat", 'internlm-x2', 
+    parser.add_argument("--engine", "-e", choices=["llava16-7b", "llava16-13b", "llava15-7b", "qwen-vl", "qwen-vl-chat", 'internlm-x2', 
                                                    'emu2-chat', 'idefics1-9b-instruct', 'idefics1-80b-instruct', 'idefics2-8b', 'gpt4v', 'vila-7b', 'vila-2.7b',
                                                    "phi3-vision"],
                         default=["phi3-vision"], nargs="+")
     parser.add_argument("--resultJson", "-r", default="results.json", type=str, help="Result json file.")
     parser.add_argument('--CoT', default=False, action='store_true', help='Whether to eval CoT.')
-    parser.add_argument('--single', default=False, action='store_true', help='Using sinle image for comparison.')
 
     return parser.parse_args()
 
@@ -56,8 +55,6 @@ if __name__ == "__main__":
         for dataset in args.dataset:
             if args.CoT:
                 result_file = f"results/{dataset}/{engine}_CoT.json"
-            elif args.single:
-                result_file = f"results/{dataset}/{engine}_single.json"
             else:
                 result_file = f"results/{dataset}/{engine}.json"
             with open(result_file, "r") as f:

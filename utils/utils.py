@@ -48,9 +48,6 @@ def load_image(img_ids, root_path):
         
     return images, image_paths
 
-def coco_id_to_imgname(img_id, prefix='COCO_val2014_'):
-    return f'{prefix}{img_id:012}.jpg'
-
 ## load data
 def load_data(args, dataset):
     dataDir = args.dataDir
@@ -60,99 +57,6 @@ def load_data(args, dataset):
 
     return query_meta
     
-
-def load_text_data(args):
-    dataset = args.dataset
-    dataDir = args.dataDir
-    if dataset == 'agnews':
-        from datasets import load_dataset
-        data = load_dataset('ag_news')
-        support, query = data['train'], data['test']
-        label_dict = {0: 'World', 1: 'Sports', 2: 'Business', 3: 'Sci/Tech'}
-        support_meta = []
-        for s in support:
-            support_meta.append({'question': s['text'], 'answer': label_dict[s['label']]})
-        query_meta = []
-        for q in query:
-            query_meta.append({'question': q['text'], 'answer': label_dict[q['label']]})
-    elif dataset == 'imdb':
-        from datasets import load_dataset
-        data = load_dataset('imdb')
-        support, query = data['train'], data['test']
-        label_dict = {0: 'Negative', 1: 'Positive'}
-        support_meta = []
-        for s in support:
-            support_meta.append({'question': s['text'], 'answer': label_dict[s['label']]})
-        query_meta = []
-        for q in query:
-            query_meta.append({'question': q['text'], 'answer': label_dict[q['label']]})
-        query_meta = query_meta[:1000]
-    elif dataset == 'trec':
-        from datasets import load_dataset
-        data = load_dataset('trec')
-        support, query = data['train'], data['test']
-        label_dict = {0: 'ABBR', 1: 'ENTY', 2: 'DESC', 3: 'HUM', 4: 'LOC', 5: 'NUM'}
-        support_meta = []
-        for s in support:
-            support_meta.append({'question': s['text'], 'answer': label_dict[s['coarse_label']]})
-        query_meta = []
-        for q in query:
-            query_meta.append({'question': q['text'], 'answer': label_dict[q['coarse_label']]})
-    elif dataset == 'mit_movies_director':
-        field_name = "Director"
-        all_fields = ["Actor", "Award", "Character_Name", "Director", "Genre", "Opinion", "Origin", "Plot", "Quote", "Relationship", "Soundtrack", "Year"]
-        assert field_name in all_fields
-        all_fields.remove(field_name)
-        filter_tags = [f"B-{field}" for field in all_fields] + [f"I-{field}" for field in all_fields] + ["O"]
-        target_tags = [f"B-{field_name}", f"I-{field_name}"]
-
-        with open(f'{dataDir}/{dataset}/train', 'r') as f:
-            lines = f.readlines()
-            lines = [line.replace(' <=> <NULL>','').strip() for line in lines]
-        support_meta = []
-        for line in lines:
-            answer = ''
-            untagged_line = ''
-            for word in line.split(' '):
-                contains_target = [tag in word for tag in target_tags]
-                if np.any(contains_target):
-                    for tag in target_tags:
-                        word = word.replace(':' + tag, '')
-                    answer += word + ' '
-                for tag in filter_tags:
-                    word = word.replace(':' + tag, '')
-                untagged_line += word + ' '
-
-            if answer != '':
-                support_meta.append({'question': untagged_line.strip(), 'answer': answer.strip()})
-
-        query_meta = []
-        with open(f'{dataDir}/{dataset}/test', 'r') as f:
-            lines = f.readlines()
-            lines = [line.replace(' <=> <NULL>','').strip() for line in lines]
-            
-        for line in lines:
-            answer = ''
-            untagged_line = ''
-            for word in line.split(' '):
-                contains_target = [tag in word for tag in target_tags]
-                if np.any(contains_target):
-                    for tag in target_tags:
-                        word = word.replace(':' + tag, '')
-                    answer += word + ' '
-                for tag in filter_tags:
-                    word = word.replace(':' + tag, '')
-                untagged_line += word + ' '
-
-            if answer != '':
-                query_meta.append({'question': untagged_line.strip(), 'answer': answer.strip()})
-    elif dataset in ['open_mi_captioned', 'open_fvqa_captioned', 'math_induction_text', 'math_induction_text_interleaved', 'clevr_simple_text', 'cobsat_text', 'open_t2i_mi_text', 'matching_mi_text', 'matching_mi_2_text']:
-        with open(f'{dataDir}/{dataset}/query.json', 'r') as f:
-            query_meta = json.load(f)
-        with open(f'{dataDir}/{dataset}/support.json', 'r') as f:
-            support_meta = json.load(f)
-    return query_meta, support_meta
-
 def encode_image(image_path):
     _, file_extension = os.path.splitext(image_path)
     file_extension = file_extension.lower()
@@ -169,3 +73,22 @@ def encode_image(image_path):
     with open(image_path, "rb") as image_file:
         base64_image = base64.b64encode(image_file.read()).decode('utf-8')
     return base64_image, mime_type
+
+def get_task_instruction(args, dataset):
+    if dataset in ['analogy', 'domain', 'plot', 'image_needles', 'plot_text', 'places', 'image_needles_concat']:
+        instr = 'Answer with a single word.'
+    elif dataset in ['codeu', 'foods', 'image_jigsaw', 'codeu_text']:
+        instr = 'Answer with the option symbol.'
+    elif dataset in ['arxiv', 'arxiv_text']:
+        instr = 'Answer with the paper title.'
+    elif dataset in ['count', 'count_concat']:
+        instr = 'Answer with a single number.'
+    elif dataset in ['3d_scene', '3d_scene_concat']:
+        instr = 'The following images are different views of the same 3D scene. Answer with a single number.'
+    
+    return instr
+
+def format_answer(answer, dataset, query=None):
+    if dataset in ['count']:
+        answer = str(answer)
+    return answer
