@@ -3,8 +3,7 @@ import torch.nn.functional as F
 import os
 import time
 from PIL import Image
-from .ICL_utils import get_task_instruction, format_answer
-from .utils import load_image, encode_image
+from .utils import load_image, encode_image, get_task_instruction, format_answer
 
 def ICL_I2T_inference(args, engine, dataset, model, tokenizer, query, 
                     data_path, processor, max_new_tokens):
