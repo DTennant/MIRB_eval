@@ -27,7 +27,7 @@ metrics = {
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description='I2T ICL Evaluation')
+    parser = argparse.ArgumentParser(description='I2T Evaluation')
 
     parser.add_argument('--dataset', default='analogy', choices=['analogy', 'codeu', 'count', 'arxiv', 'domain', 'image_needles', 'plot', 'places', 'foods', 'image_jigsaw', '3d_scene',
                                                                  'codeu_text', 'count_concat', 'plot_text', 'arxiv_text', '3d_scene_concat', 'image_needles_concat'], nargs="+")
